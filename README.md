@@ -1,4 +1,6 @@
-The following document will shared details on how to verify code of your Liquidity Generator Token
+#DxMint Liquidity Generator
+
+The following document will share details on how to verify code of your Liquidity Generator Token
 
 ### BSCScan, EtherScan or Similar
 1. Start by first navigating to the verification section of BSCScan (https://bscscan.com/verifyContract) (Or for your chain)
