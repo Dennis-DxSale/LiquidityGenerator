@@ -8,7 +8,7 @@ The following document will shared details on how to verify code of your Liquidi
 5. For Open Source License Type select "3) MIT License (MIT)"
 6. Click continue
 7. Now in the optimization field on the right select "Yes"
-8. In the section that says enter solidity contract code below copy paste the contract for your chain
+8. In the section that says enter solidity contract code below copy paste the contract for your chain from the chains folder in this github repository
 9. At the very bottom of the page Verify the Captcha and click the Verify and Publish button
 10. BSCScan will print an error saying "ByteCode (what we are looking for):"
     - Scroll all the way to the right of this section you will see a lot of 00000000000000's followed by a few numbers
