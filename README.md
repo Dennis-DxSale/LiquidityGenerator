@@ -1,4 +1,4 @@
-#DxMint Liquidity Generator
+# DxMint Liquidity Generator
 
 The following document will share details on how to verify code of your Liquidity Generator Token
 
