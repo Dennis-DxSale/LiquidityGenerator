@@ -1,3 +1,3 @@
 # BSC Scan Verification Instructions
-## LiquidityGenerator
+### LiquidityGenerator
 DxMint code for Liquidity Generator
