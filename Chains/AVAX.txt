@@ -698,7 +698,7 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
 
     mapping (address => bool) private _isExcluded;
     address[] private _excluded;
-    address public router = 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506; // Sushiswap Router
+    address public router = 0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106; // Sushiswap Router
     uint256 private constant MAX = ~uint256(0);
     uint256 public _tTotal;
     uint256 private _rTotal;
