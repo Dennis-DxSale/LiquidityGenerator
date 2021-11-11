@@ -1,3 +1,7 @@
+/**
+ *Submitted for verification at FtmScan.com on 2021-10-29
+*/
+
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.12;
@@ -15,7 +19,7 @@ interface IERC20 {
     /**
      * @dev Moves `amount` tokens from the caller's account to `recipient`.
      *
-     * Returns a boolean value indicating whether the operation succeeded.
+     * Returns a boolean value indicating whETHer the operation succeeded.
      *
      * Emits a {Transfer} event.
      */
@@ -33,14 +37,14 @@ interface IERC20 {
     /**
      * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.
      *
-     * Returns a boolean value indicating whether the operation succeeded.
+     * Returns a boolean value indicating whETHer the operation succeeded.
      *
-     * IMPORTANT: Beware that changing an allowance with this method brings the risk
+     * IMPORTANT: Beware that changing an allowance with this mETHod brings the risk
      * that someone may use both the old and the new allowance by unfortunate
      * transaction ordering. One possible solution to mitigate this race
      * condition is to first reduce the spender's allowance to 0 and set the
      * desired value afterwards:
-     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+     * https://github.com/ETHereum/EIPs/issues/20#issuecomment-263524729
      *
      * Emits an {Approval} event.
      */
@@ -51,7 +55,7 @@ interface IERC20 {
      * allowance mechanism. `amount` is then deducted from the caller's
      * allowance.
      *
-     * Returns a boolean value indicating whether the operation succeeded.
+     * Returns a boolean value indicating whETHer the operation succeeded.
      *
      * Emits a {Transfer} event.
      */
@@ -237,7 +241,7 @@ abstract contract Context {
     }
 
     function _msgData() internal view virtual returns (bytes memory) {
-        this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
+        this; // silence state mutability warning without generating bytecode - see https://github.com/ETHereum/solidity/issues/2691
         return msg.data;
     }
 }
@@ -279,7 +283,7 @@ library Address {
      * @dev Replacement for Solidity's `transfer`: sends `amount` wei to
      * `recipient`, forwarding all available gas and reverting on errors.
      *
-     * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost
+     * https://eips.ETHereum.org/EIPS/eip-1884[EIP1884] increases the gas cost
      * of certain opcodes, possibly making contracts go over the 2300 gas limit
      * imposed by `transfer`, making them unable to receive funds via
      * `transfer`. {sendValue} removes this limitation.
@@ -469,7 +473,7 @@ contract Ownable is Context {
 
 // pragma solidity >=0.5.0;
 
-interface IUniswapV2Factory {
+interface SpookySwapFactory {
     event PairCreated(address indexed token0, address indexed token1, address pair, uint);
 
     function feeTo() external view returns (address);
@@ -488,7 +492,7 @@ interface IUniswapV2Factory {
 
 // pragma solidity >=0.5.0;
 
-interface IUniswapV2Pair {
+interface IISpookySwapPair {
     event Approval(address indexed owner, address indexed spender, uint value);
     event Transfer(address indexed from, address indexed to, uint value);
 
@@ -698,7 +702,7 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
 
     mapping (address => bool) private _isExcluded;
     address[] private _excluded;
-    address public router = 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506; // Sushiswap Router
+    address public router;
     uint256 private constant MAX = ~uint256(0);
     uint256 public _tTotal;
     uint256 private _rTotal;
@@ -715,7 +719,7 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
     uint256 private _previousLiquidityFee = _liquidityFee;
 
     IUniswapV2Router02 public immutable uniswapV2Router;
-    address public immutable uniswapV2Pair;
+    address public immutable ISpookySwapPair;
     
     bool inSwapAndLiquify;
     bool public swapAndLiquifyEnabled = false;
@@ -727,7 +731,7 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
     event SwapAndLiquifyEnabledUpdated(bool enabled);
     event SwapAndLiquify(
         uint256 tokensSwapped,
-        uint256 ethReceived,
+        uint256 ETHReceived,
         uint256 tokensIntoLiqudity
     );
     
@@ -737,13 +741,13 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
         inSwapAndLiquify = false;
     }
     
-    constructor (address tokenOwner,string memory name, string memory symbol,uint8 decimal, uint256 amountOfTokenWei,uint8 setTaxFee, uint8 setLiqFee, uint256 _maxTaxFee, uint256 _maxLiqFee, uint256 _minMxTxPer) public {
+    constructor (address tokenOwner,string memory name, string memory symbol,uint8 decimal, uint256 amountOfTokenWei,uint8 setTaxFee, uint8 setLiqFee, uint256 _maxTaxFee, uint256 _maxLiqFee, uint256 _minMxTxPer, address _router) public {
         _name = name;
         _symbol = symbol;
         _decimals = decimal;
         _tTotal = amountOfTokenWei;
         _rTotal = (MAX - (MAX % _tTotal));
-        
+        router = _router;
         _rOwned[tokenOwner] = _rTotal;
         
         maxTaxFee = _maxTaxFee;        
@@ -756,7 +760,7 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
         numTokensSellToAddToLiquidity = amountOfTokenWei.mul(1).div(1000);
         IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(router);
          // Create a uniswap pair for this new token
-        uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
+        ISpookySwapPair = SpookySwapFactory(_uniswapV2Router.factory())
             .createPair(address(this), _uniswapV2Router.WETH());
 
         // set the rest of the contract variables
@@ -1015,7 +1019,7 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
         if (
             overMinTokenBalance &&
             !inSwapAndLiquify &&
-            from != uniswapV2Pair &&
+            from != ISpookySwapPair &&
             swapAndLiquifyEnabled
         ) {
             contractTokenBalance = numTokensSellToAddToLiquidity;
@@ -1047,7 +1051,7 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
         uint256 initialBalance = address(this).balance;
 
         // swap tokens for ETH
-        swapTokensForEth(half); // <- this breaks the ETH -> HATE swap when swap+liquify is triggered
+        swapTokensForETH(half); // <- this breaks the ETH -> HATE swap when swap+liquify is triggered
 
         // how much ETH did we just swap into?
         uint256 newBalance = address(this).balance.sub(initialBalance);
@@ -1058,8 +1062,8 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
         emit SwapAndLiquify(half, newBalance, otherHalf);
     }
 
-    function swapTokensForEth(uint256 tokenAmount) private {
-        // generate the uniswap pair path of token -> weth
+    function swapTokensForETH(uint256 tokenAmount) private {
+        // generate the uniswap pair path of token -> wETH
         address[] memory path = new address[](2);
         path[0] = address(this);
         path[1] = uniswapV2Router.WETH();
@@ -1076,12 +1080,12 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
         );
     }
 
-    function addLiquidity(uint256 tokenAmount, uint256 ethAmount) private {
+    function addLiquidity(uint256 tokenAmount, uint256 ETHAmount) private {
         // approve token transfer to cover all possible scenarios
         _approve(address(this), address(uniswapV2Router), tokenAmount);
 
         // add the liquidity
-        uniswapV2Router.addLiquidityETH{value: ethAmount}(
+        uniswapV2Router.addLiquidityETH{value: ETHAmount}(
             address(this),
             tokenAmount,
             0, // slippage is unavoidable
@@ -1091,7 +1095,7 @@ contract LiquidityGeneratorToken is Context, IERC20, Ownable {
         );
     }
 
-    //this method is responsible for taking all fee, if takeFee is true
+    //this mETHod is responsible for taking all fee, if takeFee is true
     function _tokenTransfer(address sender, address recipient, uint256 amount,bool takeFee) private {
         if(!takeFee)
             removeAllFee();
